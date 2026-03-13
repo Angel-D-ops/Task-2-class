@@ -29,14 +29,20 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
-#task-input {
+#task-input,
+#due-date-input {
     flex: 1;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+}
+
+#due-date-input {
+    min-width: 180px;
 }
 
 button {
@@ -76,4 +82,43 @@ button:hover {
 
 #task-list li:last-child {
     margin-bottom: 0;
+}
+
+.task-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.task-title {
+    color: #222;
+}
+
+.task-due-date {
+    color: #666;
+    font-size: 14px;
+}
+
+.delete-button {
+    margin-left: auto;
+    background-color: #dc3545;
+}
+
+.delete-button:hover {
+    background-color: #b02a37;
+}
+
+#task-list li.overdue {
+    border-color: #f1aeb5;
+    background-color: #fff5f5;
+}
+
+@media (max-width: 600px) {
+    #task-form > * {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
 }
