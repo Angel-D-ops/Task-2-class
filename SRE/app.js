@@ -12,7 +12,7 @@ function formatDueDate(dueDate) {
     if (!dueDate) {
         return '';
     }
-
+ 
     const formattedDate = new Date(`${dueDate}T00:00:00`);
 
     return formattedDate.toLocaleDateString(undefined, {
