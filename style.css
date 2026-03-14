@@ -29,10 +29,21 @@ h1 {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 #task-input {
+    flex: 2;
+    min-width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#due-date-input {
     flex: 1;
+    min-width: 140px;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -64,7 +75,7 @@ button:hover {
 }
 
 #task-list li {
-    padding: 10px;
+    padding: 15px;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -72,8 +83,56 @@ button:hover {
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: background-color 0.3s;
 }
 
 #task-list li:last-child {
     margin-bottom: 0;
+}
+
+/* NEW: Task content container */
+.task-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* NEW: Task title styling */
+.task-title {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* NEW: Due date styling */
+.task-due-date {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 4px;
+}
+
+/* NEW: Overdue task styling */
+.overdue {
+    background-color: #fff0f0 !important;
+    border-left: 4px solid #dc3545 !important;
+}
+
+.overdue .task-due-date {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* NEW: Delete button styling */
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    height: fit-content;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
 }
