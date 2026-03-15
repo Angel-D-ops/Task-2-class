@@ -3,27 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Task List</title>
+    <title>Group Task Manager</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>📋 Task List</h1>
-        
-        <form id="task-form">
-            <input type="text" id="task-input" placeholder="Enter a new task..." required>
-            <input type="date" id="due-date-input" aria-label="Select a due date for the task">
-            <button type="submit">Add Task</button>
-        </form>
-        
-        <div class="task-stats">
-            <span id="task-count">0 tasks</span>
-        </div>
-        
-        <ul id="task-list"></ul>
-    </div>
-    
-    <script src="app.js"></script>
-</body>
 
+<body>
+
+    <div class="container">
+
+        <!-- Header -->
+        <header class="header">
+            <h1>📋 Group Task Manager</h1>
+            <p class="subtitle">Organize and track your team's tasks</p>
+        </header>
+
+
+        <!-- Task Input Section -->
+        <section class="task-input-section">
+            <form id="task-form">
+
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="task-input" 
+                        placeholder="✏️ Enter a new task..."
+                        required
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="due-date-input">Due Date</label>
+                    <input 
+                        type="date" 
+                        id="due-date-input"
+                    >
+                </div>
+
+                <button type="submit" class="add-btn">
+                    ➕ Add Task
+                </button>
+
+            </form>
+        </section>
+
+
+        <!-- Task Statistics -->
+        <section class="task-stats">
+            <div class="stats-box">
+                <span id="task-count">0</span>
+                <p>Total Tasks</p>
+            </div>
+        </section>
+
+
+        <!-- Task List -->
+        <section class="task-list-section">
+            <ul id="task-list"></ul>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Group Project Task Manager</p>
+        </footer>
+
+    </div>
+
+    <script src="app.js"></script>
+
+</body>
 </html>
