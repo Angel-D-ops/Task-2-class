@@ -1,12 +1,21 @@
 // Array to store tasks
 let tasks = [];
 
+// Active filter & search state
+let activeFilter = 'all';
+let searchQuery = '';
+
 // DOM elements
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
 const dueDateInput = document.getElementById('due-date-input');
 const taskList = document.getElementById('task-list');
 const taskCount = document.getElementById('task-count');
+const searchInput = document.getElementById('search-input');
+const clearSearchBtn = document.getElementById('clear-search');
+const filterButtons = document.querySelectorAll('.filter-btn');
+const emptyMessage = document.getElementById('empty-message');
+ 
 
 function formatDueDate(dueDate) {
     if (!dueDate) {
@@ -32,49 +41,88 @@ function isOverdue(dueDate) {
 
     return new Date(`${dueDate}T00:00:00`) < today;
 }
-
+function highlightMatch(text, query) {
+    if (!query) return text;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+// getFilteredTasks carries originalIndex so delete works on filtered lists
+function getFilteredTasks() {
+    return tasks
+        .map((task, index) => ({ ...task, originalIndex: index }))
+        .filter(({ text, dueDate }) => {
+            const matchesSearch = text.toLowerCase().includes(searchQuery.toLowerCase());
+ 
+            let matchesFilter = true;
+            if (activeFilter === 'overdue') {
+                matchesFilter = isOverdue(dueDate);
+            } else if (activeFilter === 'upcoming') {
+                matchesFilter = dueDate && !isOverdue(dueDate);
+            } else if (activeFilter === 'no-date') {
+                matchesFilter = !dueDate;
+            }
+ 
+            return matchesSearch && matchesFilter;
+        });
+}
 // Function to render tasks
 function renderTasks() {
     // Clear current list
     taskList.innerHTML = '';
     
-    // Add each task to the list
-    tasks.forEach((task, index) => {
+    
+    
+    // Update task count
+    
+     const filtered = getFilteredTasks();
+ 
+    if (filtered.length === 0) {
+        emptyMessage.style.display = 'block';
+    } else {
+        emptyMessage.style.display = 'none';
+    }
+ 
+    filtered.forEach(({ text, dueDate, originalIndex }) => {
         const li = document.createElement('li');
         const taskContent = document.createElement('div');
         const taskTitle = document.createElement('span');
         const taskDueDate = document.createElement('span');
         const deleteButton = document.createElement('button');
-        const overdue = isOverdue(task.dueDate);
-
-        if (overdue) {
-            li.classList.add('overdue');
-        }
-
+        const overdue = isOverdue(dueDate);
+ 
+        if (overdue) li.classList.add('overdue');
+ 
         taskContent.className = 'task-content';
+ 
         taskTitle.className = 'task-title';
-        taskTitle.textContent = task.text;
-
+        // Use innerHTML to support <mark> highlight tags
+        taskTitle.innerHTML = highlightMatch(text, searchQuery);
+ 
         taskDueDate.className = 'task-due-date';
-        taskDueDate.textContent = task.dueDate
-            ? `Due: ${formatDueDate(task.dueDate)}`
+        taskDueDate.textContent = dueDate
+            ? `Due: ${formatDueDate(dueDate)}`
             : 'No due date';
-
+ 
         deleteButton.className = 'delete-button';
         deleteButton.textContent = 'Delete';
-        deleteButton.addEventListener('click', function() {
-            deleteTask(index);
+        deleteButton.addEventListener('click', function () {
+            deleteTask(originalIndex);
         });
-
+ 
         taskContent.appendChild(taskTitle);
         taskContent.appendChild(taskDueDate);
         li.appendChild(taskContent);
         li.appendChild(deleteButton);
         taskList.appendChild(li);
     });
-    
-    // Update task count
-    taskCount.textContent = `${tasks.length} task${tasks.length !== 1 ? 's' : ''}`;
+ 
+    // Count reflects filtered results when searching/filtering, total otherwise
+    const isFiltering = searchQuery || activeFilter !== 'all';
+    if (isFiltering) {
+        taskCount.textContent = `${filtered.length} of ${tasks.length} task${tasks.length !== 1 ? 's' : ''}`;
+    } else {
+        taskCount.textContent = `${tasks.length} task${tasks.length !== 1 ? 's' : ''}`;
+    }
 }
 
 // Function to add a task
@@ -107,5 +155,32 @@ taskForm.addEventListener('submit', function(e) {
     }
 });
 
+// Search input
+searchInput.addEventListener('input', function () {
+    searchQuery = this.value;
+    // Show/hide clear button
+    clearSearchBtn.style.display = searchQuery ? 'block' : 'none';
+    renderTasks();
+});
+ 
+// Clear search button
+clearSearchBtn.addEventListener('click', function () {
+    searchInput.value = '';
+    searchQuery = '';
+    clearSearchBtn.style.display = 'none';
+    searchInput.focus();
+    renderTasks();
+});
+ 
+// Filter buttons
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', function () {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        activeFilter = this.dataset.filter;
+        renderTasks();
+    });
+});
+ 
 // Initial render
 renderTasks();

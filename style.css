@@ -59,6 +59,87 @@ button:hover {
     background-color: #0056b3;
 }
 
+/* ── Search & Filter Section ── */
+.search-filter-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+ 
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0 10px;
+    background: #fafafa;
+    transition: border-color 0.2s;
+}
+ 
+.search-box:focus-within {
+    border-color: #007bff;
+    background: #fff;
+}
+ 
+.search-icon {
+    font-size: 14px;
+    margin-right: 8px;
+    color: #888;
+}
+ 
+#search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 0;
+    font-size: 15px;
+    outline: none;
+    color: #333;
+}
+ 
+.clear-btn {
+    background: none;
+    color: #aaa;
+    padding: 4px 6px;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 50%;
+    display: none; /* hidden until there's text */
+}
+ 
+.clear-btn:hover {
+    background-color: #f0f0f0;
+    color: #555;
+}
+ 
+.filter-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+ 
+.filter-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    background-color: #f0f0f0;
+    color: #555;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+ 
+.filter-btn:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+ 
+.filter-btn.active {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
 .task-stats {
     margin-bottom: 10px;
     color: #666;
@@ -113,6 +194,14 @@ button:hover {
     background-color: #fff5f5;
 }
 
+/* Empty state message */
+.empty-message {
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+    padding: 20px 0;
+}
+
 @media (max-width: 600px) {
     #task-form > * {
         width: 100%;
@@ -120,5 +209,14 @@ button:hover {
 
     button {
         width: 100%;
+    }
+
+     .filter-group {
+        gap: 6px;
+    }
+ 
+    .filter-btn {
+        font-size: 12px;
+        padding: 5px 10px;
     }
 }

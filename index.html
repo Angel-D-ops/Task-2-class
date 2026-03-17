@@ -55,10 +55,30 @@
             </div>
         </section>
 
+        <!-- Search & Filter Section -->
+        <section class="search-filter-section">
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="text"
+                    id="search-input"
+                    placeholder="Search tasks..."
+                >
+                <button type="button" id="clear-search" class="clear-btn" title="Clear search">✕</button>
+            </div>
+ 
+            <div class="filter-group">
+                <button type="button" class="filter-btn active" data-filter="all">All</button>
+                <button type="button" class="filter-btn" data-filter="overdue">🔴 Overdue</button>
+                <button type="button" class="filter-btn" data-filter="upcoming">🟡 Upcoming</button>
+                <button type="button" class="filter-btn" data-filter="no-date">⚪ No Date</button>
+            </div>
+        </section>
 
         <!-- Task List -->
         <section class="task-list-section">
             <ul id="task-list"></ul>
+            <p id="empty-message" class="empty-message" style="display:none;">No tasks match your search or filter.</p>
         </section>
 
 
