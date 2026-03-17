@@ -70,8 +70,6 @@ function renderTasks() {
     // Clear current list
     taskList.innerHTML = '';
     
-    
-    
     // Update task count
     
      const filtered = getFilteredTasks();
