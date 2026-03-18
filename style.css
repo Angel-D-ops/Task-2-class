@@ -152,6 +152,7 @@ body::before {
     height: 180px;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(233, 196, 106, 0.24), rgba(231, 111, 81, 0.08));
+    pointer-events: none;
 }
 
 .eyebrow,
@@ -314,6 +315,9 @@ button {
 }
 
 .add-btn {
+    position: relative;
+    z-index: 1;
+    width: 100%;
     min-width: 156px;
     min-height: 60px;
     padding: 0 22px;
