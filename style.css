@@ -599,6 +599,7 @@ button {
     background: rgba(143, 139, 133, 0.22);
 }
 
+/* NEW: Task content container */
 .task-content {
     flex: 1;
     display: flex;
@@ -606,12 +607,7 @@ button {
     gap: 10px;
 }
 
-.task-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-}
-
+/* NEW: Task title styling */
 .task-title {
     font-size: 1.02rem;
     line-height: 1.55;
@@ -627,6 +623,7 @@ button {
     padding: 0 4px;
 }
 
+/* NEW: Due date styling */
 .task-due-date {
     display: inline-flex;
     align-items: center;
@@ -676,6 +673,18 @@ button {
     color: #66645f;
 }
 
+/* NEW: Overdue task styling */
+.overdue {
+    background-color: #fff0f0 !important;
+    border-left: 4px solid #dc3545 !important;
+}
+
+.overdue .task-due-date {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* NEW: Delete button styling */
 .delete-button {
     flex: 0 0 auto;
     width: 46px;

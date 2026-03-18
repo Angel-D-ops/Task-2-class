@@ -1,4 +1,4 @@
-// Array to store tasks
+// Array to store tasks (each task is now an object with text and dueDate)
 let tasks = [];
 
 // Active filter & search state
@@ -33,13 +33,15 @@ const priorityLabels = {
     low: 'Low Priority'
 };
 
+// Helper function to format date nicely
 function formatDueDate(dueDate) {
     if (!dueDate) {
         return '';
     }
- 
+    
+    // Convert YYYY-MM-DD to a readable format
     const formattedDate = new Date(`${dueDate}T00:00:00`);
-
+    
     return formattedDate.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',
@@ -47,15 +49,17 @@ function formatDueDate(dueDate) {
     });
 }
 
+// Helper function to check if a task is overdue
 function isOverdue(dueDate) {
     if (!dueDate) {
         return false;
     }
-
+    
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-
-    return new Date(`${dueDate}T00:00:00`) < today;
+    
+    const taskDate = new Date(`${dueDate}T00:00:00`);
+    return taskDate < today;
 }
 function highlightMatch(text, query) {
     if (!query) return text;
@@ -173,6 +177,7 @@ function renderTasks() {
         taskContent.appendChild(taskMeta);
         li.appendChild(taskContent);
         li.appendChild(deleteButton);
+        
         taskList.appendChild(li);
     });
  
@@ -187,19 +192,18 @@ function renderTasks() {
     updateMetrics();
 }
 
-// Function to add a task
-function addTask(taskText, dueDate, priority) {
+// Function to add a task (now accepts due date)
+function addTask(taskText, dueDate) {
     if (taskText) {
         tasks.push({
             text: taskText,
-            dueDate,
-            priority
+            dueDate: dueDate || null  // Store due date or null if not provided
         });
         renderTasks();
     }
 }
 
-// Function to delete a task (make it global so onclick works)
+// Function to delete a task
 window.deleteTask = function(index) {
     tasks.splice(index, 1);
     renderTasks();
@@ -209,14 +213,12 @@ window.deleteTask = function(index) {
 taskForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const taskText = taskInput.value.trim();
-    const dueDate = dueDateInput.value;
-    const priority = priorityInput.value;
+    const dueDate = dueDateInput.value; // Get the selected due date
     
     if (taskText) {
         addTask(taskText, dueDate, priority);
         taskInput.value = '';
-        dueDateInput.value = '';
-        priorityInput.value = 'medium';
+        dueDateInput.value = ''; // Clear the date input
     }
 });
 
