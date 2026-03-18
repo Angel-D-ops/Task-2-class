@@ -75,7 +75,7 @@ function renderTasks() {
      const filtered = getFilteredTasks();
  
     if (filtered.length === 0) {
-        emptyMessage.style.display = 'block';
+        emptyMessage.style.display = 'flex';
     } else {
         emptyMessage.style.display = 'none';
     }
@@ -97,12 +97,13 @@ function renderTasks() {
         taskTitle.innerHTML = highlightMatch(text, searchQuery);
  
         taskDueDate.className = 'task-due-date';
-        taskDueDate.textContent = dueDate
-            ? `Due: ${formatDueDate(dueDate)}`
-            : 'No due date';
+        taskDueDate.innerHTML = dueDate
+            ? `<i class="ph ph-calendar-blank"></i> Due: ${formatDueDate(dueDate)}`
+            : `<i class="ph ph-calendar-blank"></i> No due date`;
  
         deleteButton.className = 'delete-button';
-        deleteButton.textContent = 'Delete';
+        deleteButton.title = 'Delete Task';
+        deleteButton.innerHTML = '<i class="ph ph-trash"></i>';
         deleteButton.addEventListener('click', function () {
             deleteTask(originalIndex);
         });

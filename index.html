@@ -4,87 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group Task Manager</title>
+    <!-- Modern web font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Main CSS -->
     <link rel="stylesheet" href="style.css">
+    <!-- Phosphor Icons (for premium aesthetic) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 
 <body>
+
+    <div class="background-mesh"></div>
 
     <div class="container">
 
         <!-- Header -->
         <header class="header">
-            <h1>📋 Group Task Manager</h1>
-            <p class="subtitle">Organize and track your team's tasks</p>
+            <div class="header-icon-wrapper">
+                <i class="ph-fill ph-check-square-offset"></i>
+            </div>
+            <div class="header-text">
+                <h1>Group Tasks</h1>
+                <p class="subtitle">Organize and track your team's workflow</p>
+            </div>
         </header>
 
         <!-- Task Input Section -->
         <section class="task-input-section">
             <form id="task-form">
-
-                <div class="input-group">
+                <div class="input-wrapper main-input">
+                    <i class="ph ph-pencil-simple input-icon"></i>
                     <input 
                         type="text" 
                         id="task-input" 
-                        placeholder="✏️ Enter a new task..."
+                        placeholder="What needs to be done?"
                         required
+                        autocomplete="off"
                     >
                 </div>
 
-                <div class="input-group">
-                    <label for="due-date-input">Due Date</label>
+                <div class="input-wrapper date-input-wrapper">
+                    <i class="ph ph-calendar-blank input-icon"></i>
                     <input 
                         type="date" 
                         id="due-date-input"
+                        title="Due Date"
                     >
                 </div>
 
                 <button type="submit" class="add-btn">
-                    ➕ Add Task
+                    <i class="ph-bold ph-plus"></i>
+                    <span>Add Task</span>
                 </button>
-
             </form>
         </section>
-
 
         <!-- Task Statistics -->
         <section class="task-stats">
             <div class="stats-box">
-                <span id="task-count">0</span>
-                <p>Total Tasks</p>
+                <i class="ph-fill ph-chart-pie-slice"></i>
+                <div class="stats-text">
+                    <span id="task-count">0 tasks</span>
+                </div>
             </div>
         </section>
 
         <!-- Search & Filter Section -->
         <section class="search-filter-section">
             <div class="search-box">
-                <span class="search-icon">🔍</span>
+                <i class="ph ph-magnifying-glass search-icon"></i>
                 <input
                     type="text"
                     id="search-input"
                     placeholder="Search tasks..."
+                    autocomplete="off"
                 >
-                <button type="button" id="clear-search" class="clear-btn" title="Clear search">✕</button>
+                <button type="button" id="clear-search" class="clear-btn" title="Clear search">
+                    <i class="ph-fill ph-x-circle"></i>
+                </button>
             </div>
  
             <div class="filter-group">
                 <button type="button" class="filter-btn active" data-filter="all">All</button>
-                <button type="button" class="filter-btn" data-filter="overdue">🔴 Overdue</button>
-                <button type="button" class="filter-btn" data-filter="upcoming">🟡 Upcoming</button>
-                <button type="button" class="filter-btn" data-filter="no-date">⚪ No Date</button>
+                <button type="button" class="filter-btn filter-overdue" data-filter="overdue">
+                    <span class="dot dot-red"></span> Overdue
+                </button>
+                <button type="button" class="filter-btn filter-upcoming" data-filter="upcoming">
+                    <span class="dot dot-yellow"></span> Upcoming
+                </button>
+                <button type="button" class="filter-btn filter-nodate" data-filter="no-date">
+                    <span class="dot dot-gray"></span> No Date
+                </button>
             </div>
         </section>
 
         <!-- Task List -->
         <section class="task-list-section">
             <ul id="task-list"></ul>
-            <p id="empty-message" class="empty-message" style="display:none;">No tasks match your search or filter.</p>
+            <div id="empty-message" class="empty-message" style="display:none;">
+                <i class="ph-duotone ph-ghost empty-icon"></i>
+                <p>No tasks found. You're all caught up!</p>
+            </div>
         </section>
-
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Group Project Task Manager</p>
-        </footer>
 
     </div>
 
