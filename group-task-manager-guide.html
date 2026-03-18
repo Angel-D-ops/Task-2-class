@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Task Manager Guide</title>
+    <style>
+        :root {
+            --ink: #1f2937;
+            --muted: #5b6471;
+            --accent: #cf5a3b;
+            --surface: #fffaf4;
+            --line: #d8d4cb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            color: var(--ink);
+            background: var(--surface);
+            line-height: 1.55;
+        }
+
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            margin: 0 0 12px;
+            color: #15202b;
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 22px;
+            margin-top: 32px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--line);
+        }
+
+        h3 {
+            font-size: 17px;
+            margin-top: 22px;
+        }
+
+        p {
+            margin: 0 0 14px;
+        }
+
+        ul {
+            margin: 0 0 16px 20px;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        code {
+            padding: 1px 5px;
+            border-radius: 4px;
+            background: #f0e7dc;
+            font-family: "Courier New", monospace;
+            font-size: 0.95em;
+        }
+
+        .lede {
+            color: var(--muted);
+            font-size: 17px;
+            margin-bottom: 24px;
+        }
+
+        .callout {
+            margin: 18px 0;
+            padding: 16px 18px;
+            border-left: 5px solid var(--accent);
+            background: #fff2ec;
+        }
+
+        .two-col {
+            display: table;
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        .row {
+            display: table-row;
+        }
+
+        .cell {
+            display: table-cell;
+            vertical-align: top;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+        }
+
+        .cell:first-child {
+            width: 190px;
+            font-weight: bold;
+            background: #f7efe5;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Group Task Manager: How Everything Works</h1>
+        <p class="lede">
+            This document explains the current implementation of the Group Task Manager app in this project,
+            including the page structure, the styling system, the JavaScript behavior, and the main limitations.
+        </p>
+
+        <div class="callout">
+            The app is a lightweight client-side task board. All task data is stored in memory inside the browser
+            while the page is open. There is no database, backend, or local persistence layer.
+        </div>
+
+        <h2>1. Project Files</h2>
+        <div class="two-col">
+            <div class="row">
+                <div class="cell">index.html</div>
+                <div class="cell">Defines the visible structure of the page, including the hero area, task form, summary metric cards, filter controls, task list, and empty state.</div>
+            </div>
+            <div class="row">
+                <div class="cell">style.css</div>
+                <div class="cell">Contains the full visual design system: layout, colors, typography, spacing, card styling, responsive rules, and interaction states.</div>
+            </div>
+            <div class="row">
+                <div class="cell">app.js</div>
+                <div class="cell">Controls the interactive behavior: adding tasks, deleting tasks, searching, filtering, formatting dates, showing empty states, and updating summary metrics.</div>
+            </div>
+        </div>
+
+        <h2>2. Page Structure</h2>
+        <p>The HTML is divided into four main UI areas:</p>
+        <ul>
+            <li><strong>Hero section:</strong> introduces the board and shows the live task count in the summary panel.</li>
+            <li><strong>Composer card:</strong> contains the task name input, due date input, and add-task button.</li>
+            <li><strong>Metrics grid:</strong> shows counts for total tasks, overdue tasks, upcoming tasks, and tasks without dates.</li>
+            <li><strong>Board card:</strong> contains search, filter buttons, the task list, and the empty-state message.</li>
+        </ul>
+        <p>
+            The task list itself is an empty <code>ul</code> in the source HTML. JavaScript generates the list items
+            dynamically every time the UI is rendered.
+        </p>
+
+        <h2>3. Visual Design System</h2>
+        <p>
+            The CSS uses a warm, paper-like visual direction instead of a generic dark dashboard. The main ideas are:
+        </p>
+        <ul>
+            <li>A soft layered background made from gradients, glow elements, and a subtle grid texture.</li>
+            <li>Large editorial typography for section titles and a clean sans-serif for interface text.</li>
+            <li>Card-based layout for the hero, composer, board, and summary panels.</li>
+            <li>Color-coded task states so overdue and undated tasks are easy to distinguish visually.</li>
+            <li>Responsive breakpoints so the layout collapses cleanly on tablets and phones.</li>
+        </ul>
+
+        <h3>How task states are shown visually</h3>
+        <ul>
+            <li>Normal scheduled tasks use a teal-toned accent.</li>
+            <li>Overdue tasks switch to a warmer alert treatment.</li>
+            <li>Tasks without due dates use a muted neutral style.</li>
+            <li>Search matches are highlighted with a mark background in the task title.</li>
+        </ul>
+
+        <h2>4. JavaScript Data Model</h2>
+        <p>
+            The app keeps all tasks in a single array named <code>tasks</code>. Each task object has the following shape:
+        </p>
+        <div class="callout">
+            <code>{ text: "Task description", dueDate: "YYYY-MM-DD" }</code>
+        </div>
+        <p>
+            Two additional variables track the current UI state:
+        </p>
+        <ul>
+            <li><code>activeFilter</code> stores which filter button is selected.</li>
+            <li><code>searchQuery</code> stores the live value of the search box.</li>
+        </ul>
+
+        <h2>5. Main App Flow</h2>
+        <h3>Adding a task</h3>
+        <ul>
+            <li>The user types a task name and optionally chooses a due date.</li>
+            <li>Submitting the form calls <code>addTask(taskText, dueDate)</code>.</li>
+            <li>The new task is pushed into the <code>tasks</code> array.</li>
+            <li>The app calls <code>renderTasks()</code> to rebuild the list and update the UI.</li>
+            <li>The inputs are cleared after a successful add.</li>
+        </ul>
+
+        <h3>Deleting a task</h3>
+        <ul>
+            <li>Each rendered task gets its own delete button.</li>
+            <li>That button removes the task from the array using its original index.</li>
+            <li>After deletion, <code>renderTasks()</code> runs again to refresh the board.</li>
+        </ul>
+
+        <h3>Searching and filtering</h3>
+        <ul>
+            <li>The search input updates <code>searchQuery</code> on every keystroke.</li>
+            <li>Each filter button updates <code>activeFilter</code> when clicked.</li>
+            <li><code>getFilteredTasks()</code> combines both conditions to decide which tasks should be visible.</li>
+        </ul>
+
+        <h2>6. Core Functions</h2>
+        <div class="two-col">
+            <div class="row">
+                <div class="cell">formatDueDate</div>
+                <div class="cell">Converts a stored <code>YYYY-MM-DD</code> value into a friendlier localized date string for display.</div>
+            </div>
+            <div class="row">
+                <div class="cell">isOverdue</div>
+                <div class="cell">Compares a task due date to today and returns true only when the date is earlier than the current day.</div>
+            </div>
+            <div class="row">
+                <div class="cell">highlightMatch</div>
+                <div class="cell">Wraps matching search text in a <code>mark</code> tag so search results are visually highlighted.</div>
+            </div>
+            <div class="row">
+                <div class="cell">getFilteredTasks</div>
+                <div class="cell">Creates the task subset that matches the active search query and selected filter.</div>
+            </div>
+            <div class="row">
+                <div class="cell">updateMetrics</div>
+                <div class="cell">Recalculates the four summary cards: total, overdue, upcoming, and no-date counts.</div>
+            </div>
+            <div class="row">
+                <div class="cell">renderTasks</div>
+                <div class="cell">Clears and rebuilds the task list UI, updates the hero count, toggles the empty state, and refreshes the summary metrics.</div>
+            </div>
+        </div>
+
+        <h2>7. How Rendering Works</h2>
+        <p>
+            The app does not update single list items in place. Instead, it follows a simple full-render pattern:
+        </p>
+        <ul>
+            <li>Clear the current task list with <code>taskList.innerHTML = ''</code>.</li>
+            <li>Compute the filtered set of tasks.</li>
+            <li>Create a new <code>li</code> element for each visible task.</li>
+            <li>Add CSS classes such as <code>overdue</code> or <code>no-date</code> based on the task state.</li>
+            <li>Insert the title, due-date badge, and delete button into the item.</li>
+            <li>Append each item to the list.</li>
+        </ul>
+        <p>
+            This approach is straightforward and easy to understand for a small project, even though it is less
+            optimized than a more advanced incremental rendering strategy.
+        </p>
+
+        <h2>8. Summary Metrics Logic</h2>
+        <p>The summary cards are recalculated every time the board renders:</p>
+        <ul>
+            <li><strong>Total:</strong> all tasks currently stored in memory.</li>
+            <li><strong>Overdue:</strong> tasks with a date earlier than today.</li>
+            <li><strong>Upcoming:</strong> tasks that have a due date and are not overdue.</li>
+            <li><strong>No date:</strong> tasks whose <code>dueDate</code> value is empty.</li>
+        </ul>
+        <p>
+            The hero panel count changes depending on whether the user is viewing the full board or a filtered result.
+            For example, it can show a value like <code>2 of 5 tasks</code> during search or filter mode.
+        </p>
+
+        <h2>9. Current Limitations</h2>
+        <ul>
+            <li>Tasks are not saved after a browser refresh because there is no local storage or backend.</li>
+            <li>There is no task editing flow yet. Tasks can only be added and deleted.</li>
+            <li>There are no completion states such as done, in progress, or assigned.</li>
+            <li>The app does not validate more advanced date rules beyond checking whether a task is overdue.</li>
+            <li>The UI logic is entirely client-side, so it is suitable for a small demo but not a multi-user production system.</li>
+        </ul>
+
+        <h2>10. Good Next Steps</h2>
+        <ul>
+            <li>Add <code>localStorage</code> support so tasks persist between page reloads.</li>
+            <li>Support editing an existing task instead of only deleting it.</li>
+            <li>Add completion toggles and separate active/completed sections.</li>
+            <li>Store more metadata such as owner, priority, or notes.</li>
+            <li>Introduce a backend only if the project needs shared team access across devices.</li>
+        </ul>
+
+        <h2>11. In One Sentence</h2>
+        <p>
+            The app is a small browser-based task board that uses static HTML for structure, CSS for the full visual
+            system, and plain JavaScript to manage task data, rendering, search, filters, and summary metrics.
+        </p>
+    </main>
+</body>
+</html>

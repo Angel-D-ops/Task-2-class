@@ -242,7 +242,7 @@ body::before {
 
 #task-form {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(180px, 220px) auto;
+    grid-template-columns: minmax(0, 1.5fr) minmax(180px, 220px) minmax(160px, 190px) auto;
     gap: 14px;
     align-items: end;
 }
@@ -250,29 +250,6 @@ body::before {
 .input-wrapper {
     position: relative;
     display: flex;
-<<<<<<< HEAD
-    gap: 10px;
-    margin-bottom: 20px;
-    flex-wrap: wrap; /* Allow wrapping on small screens */
-}
-
-#task-input {
-    flex: 2;
-    min-width: 200px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-#due-date-input {
-    flex: 1;
-    min-width: 140px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 16px;
-=======
     align-items: center;
     border-radius: var(--radius-md);
     border: 1px solid var(--line);
@@ -307,7 +284,8 @@ body::before {
 }
 
 input[type="text"],
-input[type="date"] {
+input[type="date"],
+select {
     width: 100%;
     border: none;
     background: transparent;
@@ -326,10 +304,27 @@ input[type="date"] {
     color-scheme: light;
 }
 
+select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.priority-input-wrapper {
+    min-width: 0;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 16px;
+    bottom: 15px;
+    color: var(--text-soft);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
 ::-webkit-calendar-picker-indicator {
     cursor: pointer;
     opacity: 0.72;
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
 }
 
 button {
@@ -558,17 +553,6 @@ button {
 }
 
 #task-list li {
-<<<<<<< HEAD
-    padding: 15px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: background-color 0.3s;
-=======
     position: relative;
     display: flex;
     align-items: center;
@@ -580,7 +564,6 @@ button {
     box-shadow: 0 12px 24px rgba(60, 57, 53, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     animation: card-in 0.28s ease both;
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
 }
 
 #task-list li::before {
@@ -621,19 +604,11 @@ button {
     flex: 1;
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
-    flex-grow: 1;
-=======
     gap: 10px;
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
 }
 
 /* NEW: Task title styling */
 .task-title {
-<<<<<<< HEAD
-    font-weight: bold;
-    font-size: 16px;
-=======
     font-size: 1.02rem;
     line-height: 1.55;
     font-weight: 700;
@@ -646,16 +621,10 @@ button {
     color: inherit;
     border-radius: 6px;
     padding: 0 4px;
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
 }
 
 /* NEW: Due date styling */
 .task-due-date {
-<<<<<<< HEAD
-    font-size: 0.85em;
-    color: #666;
-    margin-top: 4px;
-=======
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -668,6 +637,32 @@ button {
     font-weight: 700;
 }
 
+.task-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.task-priority.priority-high {
+    background: rgba(231, 111, 81, 0.16);
+    color: var(--accent-strong);
+}
+
+.task-priority.priority-medium {
+    background: rgba(233, 196, 106, 0.22);
+    color: #8d610d;
+}
+
+.task-priority.priority-low {
+    background: rgba(42, 157, 143, 0.16);
+    color: var(--ink);
+}
+
 #task-list li.overdue .task-due-date {
     background: var(--accent-soft);
     color: var(--accent-strong);
@@ -676,7 +671,6 @@ button {
 #task-list li.no-date .task-due-date {
     background: rgba(143, 139, 133, 0.16);
     color: #66645f;
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
 }
 
 /* NEW: Overdue task styling */
@@ -692,21 +686,6 @@ button {
 
 /* NEW: Delete button styling */
 .delete-button {
-<<<<<<< HEAD
-    background-color: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-size: 14px;
-    height: fit-content;
-}
-
-.delete-button:hover {
-    background-color: #c82333;
-}
-=======
     flex: 0 0 auto;
     width: 46px;
     height: 46px;
@@ -761,7 +740,7 @@ button {
     }
 
     #task-form {
-        grid-template-columns: 1fr 220px;
+        grid-template-columns: 1fr 220px 180px;
     }
 
     .add-btn {
@@ -832,4 +811,3 @@ button {
         align-self: flex-end;
     }
 }
->>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
