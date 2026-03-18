@@ -15,6 +15,10 @@ const searchInput = document.getElementById('search-input');
 const clearSearchBtn = document.getElementById('clear-search');
 const filterButtons = document.querySelectorAll('.filter-btn');
 const emptyMessage = document.getElementById('empty-message');
+const metricTotal = document.getElementById('metric-total');
+const metricOverdue = document.getElementById('metric-overdue');
+const metricUpcoming = document.getElementById('metric-upcoming');
+const metricNoDate = document.getElementById('metric-no-date');
  
 
 function formatDueDate(dueDate) {
@@ -65,6 +69,17 @@ function getFilteredTasks() {
             return matchesSearch && matchesFilter;
         });
 }
+
+function updateMetrics() {
+    const overdueCount = tasks.filter(task => isOverdue(task.dueDate)).length;
+    const noDateCount = tasks.filter(task => !task.dueDate).length;
+    const upcomingCount = tasks.filter(task => task.dueDate && !isOverdue(task.dueDate)).length;
+
+    metricTotal.textContent = tasks.length;
+    metricOverdue.textContent = overdueCount;
+    metricUpcoming.textContent = upcomingCount;
+    metricNoDate.textContent = noDateCount;
+}
 // Function to render tasks
 function renderTasks() {
     // Clear current list
@@ -87,8 +102,10 @@ function renderTasks() {
         const taskDueDate = document.createElement('span');
         const deleteButton = document.createElement('button');
         const overdue = isOverdue(dueDate);
+        const hasNoDate = !dueDate;
  
         if (overdue) li.classList.add('overdue');
+        if (hasNoDate) li.classList.add('no-date');
  
         taskContent.className = 'task-content';
  
@@ -122,6 +139,8 @@ function renderTasks() {
     } else {
         taskCount.textContent = `${tasks.length} task${tasks.length !== 1 ? 's' : ''}`;
     }
+
+    updateMetrics();
 }
 
 // Function to add a task
@@ -158,7 +177,7 @@ taskForm.addEventListener('submit', function(e) {
 searchInput.addEventListener('input', function () {
     searchQuery = this.value;
     // Show/hide clear button
-    clearSearchBtn.style.display = searchQuery ? 'block' : 'none';
+    clearSearchBtn.style.display = searchQuery ? 'grid' : 'none';
     renderTasks();
 });
  
