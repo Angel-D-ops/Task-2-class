@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group Task List</title>
+    <title>Group Task Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
+<<<<<<< HEAD
     <div class="container">
         <h1>📋 Task List</h1>
         
@@ -26,3 +31,145 @@
     <script src="app.js"></script>
 </body>
 </html>
+=======
+    <div class="page-noise"></div>
+    <div class="page-glow glow-left"></div>
+    <div class="page-glow glow-right"></div>
+
+    <main class="app-shell">
+        <header class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">
+                    <i class="ph-fill ph-lightning"></i>
+                    Team workspace
+                </p>
+                <h1>Group Tasks</h1>
+                <p class="hero-text">
+                    Keep deadlines visible, sort the urgent work fast, and give the team a board that feels calm instead of cluttered.
+                </p>
+            </div>
+
+            <div class="hero-panel">
+                <span class="hero-panel-label">Board snapshot</span>
+                <strong id="task-count" class="hero-panel-value">0 tasks</strong>
+                <p class="hero-panel-text">Search, filter, and clean up tasks without losing context.</p>
+            </div>
+        </header>
+
+        <section class="composer-card">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Capture work</p>
+                    <h2>Add a new task</h2>
+                </div>
+            </div>
+
+            <form id="task-form">
+                <label class="input-wrapper main-input">
+                    <span class="input-label">Task name</span>
+                    <i class="ph ph-pencil-simple input-icon"></i>
+                    <input
+                        type="text"
+                        id="task-input"
+                        placeholder="What needs to be done?"
+                        required
+                        autocomplete="off"
+                    >
+                </label>
+
+                <label class="input-wrapper date-input-wrapper">
+                    <span class="input-label">Due date</span>
+                    <i class="ph ph-calendar-blank input-icon"></i>
+                    <input
+                        type="date"
+                        id="due-date-input"
+                        title="Due Date"
+                    >
+                </label>
+
+                <button type="submit" class="add-btn">
+                    <i class="ph-bold ph-plus"></i>
+                    <span>Add Task</span>
+                </button>
+            </form>
+        </section>
+
+        <section class="metrics-grid" aria-label="Task summary">
+            <article class="metric-card metric-card-primary">
+                <span class="metric-label">Total tasks</span>
+                <strong id="metric-total" class="metric-value">0</strong>
+                <span class="metric-meta">Everything on the board</span>
+            </article>
+
+            <article class="metric-card metric-card-alert">
+                <span class="metric-label">Overdue</span>
+                <strong id="metric-overdue" class="metric-value">0</strong>
+                <span class="metric-meta">Needs attention first</span>
+            </article>
+
+            <article class="metric-card metric-card-warn">
+                <span class="metric-label">Upcoming</span>
+                <strong id="metric-upcoming" class="metric-value">0</strong>
+                <span class="metric-meta">Scheduled with a deadline</span>
+            </article>
+
+            <article class="metric-card metric-card-muted">
+                <span class="metric-label">No date</span>
+                <strong id="metric-no-date" class="metric-value">0</strong>
+                <span class="metric-meta">Still needs a target</span>
+            </article>
+        </section>
+
+        <section class="board-card">
+            <div class="board-topbar">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-kicker">Task board</p>
+                        <h2>Browse the queue</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-filter-section">
+                <div class="search-box">
+                    <i class="ph ph-magnifying-glass search-icon"></i>
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Search tasks..."
+                        autocomplete="off"
+                    >
+                    <button type="button" id="clear-search" class="clear-btn" title="Clear search">
+                        <i class="ph-fill ph-x-circle"></i>
+                    </button>
+                </div>
+
+                <div class="filter-group" aria-label="Task filters">
+                    <button type="button" class="filter-btn active" data-filter="all">All</button>
+                    <button type="button" class="filter-btn filter-overdue" data-filter="overdue">
+                        <span class="dot dot-red"></span> Overdue
+                    </button>
+                    <button type="button" class="filter-btn filter-upcoming" data-filter="upcoming">
+                        <span class="dot dot-yellow"></span> Upcoming
+                    </button>
+                    <button type="button" class="filter-btn filter-nodate" data-filter="no-date">
+                        <span class="dot dot-gray"></span> No Date
+                    </button>
+                </div>
+            </div>
+
+            <section class="task-list-section">
+                <ul id="task-list"></ul>
+                <div id="empty-message" class="empty-message" style="display:none;">
+                    <i class="ph-duotone ph-cloud-slash empty-icon"></i>
+                    <p>No tasks match the current view.</p>
+                    <span>Try clearing the search or switch to another filter.</span>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
+>>>>>>> 3d33571d9ee12ed07e66dacb85096a929ea10889
