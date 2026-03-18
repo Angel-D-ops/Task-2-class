@@ -242,7 +242,7 @@ body::before {
 
 #task-form {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) minmax(180px, 220px) auto;
+    grid-template-columns: minmax(0, 1.5fr) minmax(180px, 220px) minmax(160px, 190px) auto;
     gap: 14px;
     align-items: end;
 }
@@ -284,7 +284,8 @@ body::before {
 }
 
 input[type="text"],
-input[type="date"] {
+input[type="date"],
+select {
     width: 100%;
     border: none;
     background: transparent;
@@ -301,6 +302,24 @@ input::placeholder {
 
 input[type="date"] {
     color-scheme: light;
+}
+
+select {
+    appearance: none;
+    cursor: pointer;
+}
+
+.priority-input-wrapper {
+    min-width: 0;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 16px;
+    bottom: 15px;
+    color: var(--text-soft);
+    font-size: 1rem;
+    pointer-events: none;
 }
 
 ::-webkit-calendar-picker-indicator {
@@ -587,6 +606,12 @@ button {
     gap: 10px;
 }
 
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
 .task-title {
     font-size: 1.02rem;
     line-height: 1.55;
@@ -613,6 +638,32 @@ button {
     color: var(--ink);
     font-size: 0.86rem;
     font-weight: 700;
+}
+
+.task-priority {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-size: 0.86rem;
+    font-weight: 700;
+}
+
+.task-priority.priority-high {
+    background: rgba(231, 111, 81, 0.16);
+    color: var(--accent-strong);
+}
+
+.task-priority.priority-medium {
+    background: rgba(233, 196, 106, 0.22);
+    color: #8d610d;
+}
+
+.task-priority.priority-low {
+    background: rgba(42, 157, 143, 0.16);
+    color: var(--ink);
 }
 
 #task-list li.overdue .task-due-date {
@@ -680,7 +731,7 @@ button {
     }
 
     #task-form {
-        grid-template-columns: 1fr 220px;
+        grid-template-columns: 1fr 220px 180px;
     }
 
     .add-btn {

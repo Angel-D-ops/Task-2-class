@@ -9,6 +9,7 @@ let searchQuery = '';
 const taskForm = document.getElementById('task-form');
 const taskInput = document.getElementById('task-input');
 const dueDateInput = document.getElementById('due-date-input');
+const priorityInput = document.getElementById('priority-input');
 const taskList = document.getElementById('task-list');
 const taskCount = document.getElementById('task-count');
 const searchInput = document.getElementById('search-input');
@@ -19,7 +20,18 @@ const metricTotal = document.getElementById('metric-total');
 const metricOverdue = document.getElementById('metric-overdue');
 const metricUpcoming = document.getElementById('metric-upcoming');
 const metricNoDate = document.getElementById('metric-no-date');
- 
+
+const priorityRank = {
+    high: 0,
+    medium: 1,
+    low: 2
+};
+
+const priorityLabels = {
+    high: 'High Priority',
+    medium: 'Medium Priority',
+    low: 'Low Priority'
+};
 
 function formatDueDate(dueDate) {
     if (!dueDate) {
@@ -50,6 +62,28 @@ function highlightMatch(text, query) {
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     return text.replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
 }
+
+function compareTasks(a, b) {
+    const priorityDiff = (priorityRank[a.priority] ?? priorityRank.medium) - (priorityRank[b.priority] ?? priorityRank.medium);
+
+    if (priorityDiff !== 0) {
+        return priorityDiff;
+    }
+
+    if (a.dueDate && b.dueDate) {
+        return new Date(`${a.dueDate}T00:00:00`) - new Date(`${b.dueDate}T00:00:00`);
+    }
+
+    if (a.dueDate) {
+        return -1;
+    }
+
+    if (b.dueDate) {
+        return 1;
+    }
+
+    return a.originalIndex - b.originalIndex;
+}
 // getFilteredTasks carries originalIndex so delete works on filtered lists
 function getFilteredTasks() {
     return tasks
@@ -67,7 +101,8 @@ function getFilteredTasks() {
             }
  
             return matchesSearch && matchesFilter;
-        });
+        })
+        .sort(compareTasks);
 }
 
 function updateMetrics() {
@@ -95,11 +130,13 @@ function renderTasks() {
         emptyMessage.style.display = 'none';
     }
  
-    filtered.forEach(({ text, dueDate, originalIndex }) => {
+    filtered.forEach(({ text, dueDate, priority = 'medium', originalIndex }) => {
         const li = document.createElement('li');
         const taskContent = document.createElement('div');
         const taskTitle = document.createElement('span');
+        const taskMeta = document.createElement('div');
         const taskDueDate = document.createElement('span');
+        const taskPriority = document.createElement('span');
         const deleteButton = document.createElement('button');
         const overdue = isOverdue(dueDate);
         const hasNoDate = !dueDate;
@@ -112,11 +149,16 @@ function renderTasks() {
         taskTitle.className = 'task-title';
         // Use innerHTML to support <mark> highlight tags
         taskTitle.innerHTML = highlightMatch(text, searchQuery);
+
+        taskMeta.className = 'task-meta';
  
         taskDueDate.className = 'task-due-date';
         taskDueDate.innerHTML = dueDate
             ? `<i class="ph ph-calendar-blank"></i> Due: ${formatDueDate(dueDate)}`
             : `<i class="ph ph-calendar-blank"></i> No due date`;
+
+        taskPriority.className = `task-priority priority-${priority}`;
+        taskPriority.innerHTML = `<i class="ph ph-flag-banner-fold"></i> ${priorityLabels[priority] ?? priorityLabels.medium}`;
  
         deleteButton.className = 'delete-button';
         deleteButton.title = 'Delete Task';
@@ -126,7 +168,9 @@ function renderTasks() {
         });
  
         taskContent.appendChild(taskTitle);
-        taskContent.appendChild(taskDueDate);
+        taskMeta.appendChild(taskPriority);
+        taskMeta.appendChild(taskDueDate);
+        taskContent.appendChild(taskMeta);
         li.appendChild(taskContent);
         li.appendChild(deleteButton);
         taskList.appendChild(li);
@@ -144,11 +188,12 @@ function renderTasks() {
 }
 
 // Function to add a task
-function addTask(taskText, dueDate) {
+function addTask(taskText, dueDate, priority) {
     if (taskText) {
         tasks.push({
             text: taskText,
-            dueDate
+            dueDate,
+            priority
         });
         renderTasks();
     }
@@ -165,11 +210,13 @@ taskForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const taskText = taskInput.value.trim();
     const dueDate = dueDateInput.value;
+    const priority = priorityInput.value;
     
     if (taskText) {
-        addTask(taskText, dueDate);
+        addTask(taskText, dueDate, priority);
         taskInput.value = '';
         dueDateInput.value = '';
+        priorityInput.value = 'medium';
     }
 });
 
